@@ -70,3 +70,11 @@
 2. Install on a phone. Do one translation per language with internet on.
 3. Test: Tanglish → Hindi, English → Tamil, Tamil voice → Malay, Hindi voice → Tamil, Listen on each result.
 4. Turn on flight mode and repeat a text translation. It should still work.
+
+## 6. Round 2: found on a real phone (25 Sep 2026)
+
+| # | Severity | Problem | Fix |
+|---|---|---|---|
+| 13 | Critical | "Saptiya" → the result showed சாப்டியா unchanged for Hindi, English and Malay. The on-device model doesn't know spoken Tamil and copies unknown words | Online Google Translate is now used first; ML Kit only when offline |
+| 14 | High | When the offline model copied the input back, it was shown as a "translation" | Detected; a clear message is shown instead |
+| 15 | Medium | Hindi English-letters line showed Tamil text in italics | Line only shows when the result contains Hindi script |

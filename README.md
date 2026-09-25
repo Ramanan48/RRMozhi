@@ -16,7 +16,7 @@ A Tamil-first translator app with two modes.
 
 ## How it works
 
-- **Translation:** Google ML Kit on-device translation. Each language pack (Tamil, Hindi, Malay; about 30 MB each) downloads once, the first time you use it. After that, translation works offline. Needs Google Play services on the phone.
+- **Translation:** with internet, Google Translate (online). It understands everyday spoken Tamil like *saptiya* or *enga irukka*. Without internet, the app falls back to Google ML Kit on the phone. Its language packs (about 30 MB each) download automatically on Wi-Fi after your first online translation. Offline results are marked **(offline)**. The offline model only understands formal Tamil, and if it can't translate something the app says so instead of repeating the input.
 - **Tanglish:** first changed into Tamil script, then translated. With internet it uses Google Input Tools transliteration, which is the most accurate. Without internet it uses built-in spelling rules. The Tamil version is shown under the input box so you can check it.
   - Offline spelling tips: `L` = ள, `N` = ண, `R` = ற, `zh` = ழ, `ee` = ீ, `oo` = ூ, `E`/`O` = long ே/ோ.
 - **Voice input:** the phone's Google speech recogniser in the chosen language (ta-IN, hi-IN, en-IN, ms-MY). For offline voice, download that language's offline speech pack in the Google app.
@@ -49,7 +49,8 @@ Android 8.0 (API 26) or newer, with Google Play services. Internet is needed for
 ```
 app/src/main/java/com/ramanan/mozhi/
   MainActivity.kt           Screen logic, voice input, read aloud, copy/share
-  TranslationEngine.kt      ML Kit translation and language-pack downloads
+  OnlineTranslator.kt       Google Translate online (first choice)
+  TranslationEngine.kt      ML Kit offline translation and language-pack downloads
   TanglishTransliterator.kt Tanglish → Tamil (online and offline)
   HindiRomanizer.kt         Hindi script → English letters
   Lang.kt                   Language list

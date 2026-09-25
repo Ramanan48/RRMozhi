@@ -35,10 +35,13 @@
 
     <string name="tamil_preview">Tamil: %1$s</string>
     <string name="result_label">%1$s translation</string>
+    <string name="result_label_offline">%1$s translation (offline)</string>
 
     <string name="status_converting">Converting Tanglish to Tamil script…</string>
     <string name="status_downloading">Downloading %1$s → %2$s language pack (first time only, about 30 MB each)…</string>
     <string name="status_translating">Translating…</string>
+    <string name="status_translating_offline">No internet, translating offline…</string>
+    <string name="err_offline_not_understood">The offline translator couldn\'t understand this wording (spoken Tamil like \"saptiya\" needs internet). Turn on internet and try again, or type it more formally (e.g. \"saapittaaya\").</string>
 
     <string name="err_empty_text">Type something to translate</string>
     <string name="err_empty_voice">Tap the mic and speak first</string>

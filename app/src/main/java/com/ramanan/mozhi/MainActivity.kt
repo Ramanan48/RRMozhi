@@ -183,13 +183,17 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
         tts?.stop()
     }
 
-    private fun showResult(text: String, lang: Lang) {
+    private fun showResult(text: String, lang: Lang, offline: Boolean) {
         lastResult = text
         lastResultLang = lang
-        binding.resultLabel.text = getString(R.string.result_label, lang.label)
+        binding.resultLabel.text = getString(
+            if (offline) R.string.result_label_offline else R.string.result_label, lang.label
+        )
         binding.resultText.text = text
         // Hindi script is hard to read for many users, so also show it in English letters
-        lastRoman = if (lang == Lang.HINDI) HindiRomanizer.romanize(text) else ""
+        // (only when the result really contains Hindi / Devanagari letters)
+        val hasDevanagari = text.any { it in '\u0900'..'\u097F' }
+        lastRoman = if (lang == Lang.HINDI && hasDevanagari) HindiRomanizer.romanize(text) else ""
         binding.resultRoman.text = lastRoman
         binding.resultRoman.isVisible = lastRoman.isNotBlank()
         binding.resultCard.isVisible = true
@@ -234,16 +238,38 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                     Source.VOICE -> input to spokenLang()
                 }
 
-                // Step 2: download language packs the first time
+                // Step 2: online Google Translate first (understands everyday spoken Tamil)
+                setStatus(getString(R.string.status_translating))
+                val online = try {
+                    OnlineTranslator.translate(text, from, target)
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    null // no internet or service unavailable → offline below
+                }
+
+                if (online != null) {
+                    showResult(online, target, offline = false)
+                    setBusy(false)
+                    prefetchOfflinePacks(from, target)
+                    return@launch
+                }
+
+                // Step 3: offline fallback, on-phone ML Kit (download packs the first time)
                 if (!engine.isReady(from, target)) {
                     setStatus(getString(R.string.status_downloading, from.label, target.label))
                     engine.downloadIfNeeded(from, target)
                 }
-
-                // Step 3: translate on the phone
-                setStatus(getString(R.string.status_translating))
+                setStatus(getString(R.string.status_translating_offline))
                 val result = engine.translate(text, from, target)
-                showResult(result, target)
+
+                // The offline model copies words it doesn't know. Don't pass that off as a translation.
+                if (result.trim() == text.trim()) {
+                    setBusy(false)
+                    setStatus(getString(R.string.err_offline_not_understood))
+                    return@launch
+                }
+                showResult(result, target, offline = true)
                 setBusy(false)
             } catch (e: CancellationException) {
                 throw e
@@ -256,6 +282,19 @@ class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             } catch (e: Exception) {
                 setBusy(false)
                 setStatus(getString(R.string.err_generic, e.localizedMessage ?: e.toString()))
+            }
+        }
+    }
+
+    /** After an online translation, quietly fetch the offline packs on Wi-Fi so the app also works without internet. */
+    private fun prefetchOfflinePacks(from: Lang, to: Lang) {
+        lifecycleScope.launch {
+            try {
+                if (!engine.isReady(from, to)) engine.downloadIfNeeded(from, to, wifiOnly = true)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                // not on Wi-Fi or no space: try again next time
             }
         }
     }

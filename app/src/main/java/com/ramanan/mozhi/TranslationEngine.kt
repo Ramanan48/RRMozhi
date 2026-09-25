@@ -40,8 +40,9 @@ class TranslationEngine {
         }
     }
 
-    suspend fun downloadIfNeeded(from: Lang, to: Lang) {
-        client(from, to).downloadModelIfNeeded(DownloadConditions.Builder().build()).await()
+    suspend fun downloadIfNeeded(from: Lang, to: Lang, wifiOnly: Boolean = false) {
+        val conditions = DownloadConditions.Builder().apply { if (wifiOnly) requireWifi() }.build()
+        client(from, to).downloadModelIfNeeded(conditions).await()
     }
 
     suspend fun translate(text: String, from: Lang, to: Lang): String {
