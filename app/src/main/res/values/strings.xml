@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">RR Mozhi</string>
+    <string name="process_text_label">RR Mozhi Translate</string>
+
+    <string name="mode_text">Text</string>
+    <string name="mode_voice">Voice</string>
+
+    <string name="label_from">Translate from</string>
+    <string name="label_to">Translate to</string>
+
+    <string name="lang_tanglish">Tanglish</string>
+    <string name="lang_english">English</string>
+    <string name="lang_hindi">Hindi</string>
+    <string name="lang_malay">Malay</string>
+    <string name="lang_tamil">Tamil</string>
+
+    <string name="hint_tanglish">Type Tanglish, e.g. naan veetuku poren</string>
+    <string name="hint_english">Type English text</string>
+
+    <string name="label_speak_in">Speak in</string>
+    <string name="voice_title">Speak in Tamil</string>
+    <string name="voice_title_fmt">Speak in %1$s</string>
+    <string name="voice_subtitle">Tap the mic, speak in Tamil, and the translation appears below</string>
+    <string name="voice_subtitle_fmt">Tap the mic, speak in %1$s, and the translation appears below</string>
+    <string name="tap_to_speak">Tap to speak</string>
+    <string name="heard_hint_default">Your Tamil speech will appear here</string>
+    <string name="heard_hint_fmt">Your %1$s speech will appear here (you can edit it)</string>
+    <string name="speak_prompt_tamil">பேசுங்கள்… (Speak in Tamil)</string>
+    <string name="speak_prompt_fmt">Speak in %1$s…</string>
+
+    <string name="translate">Translate</string>
+    <string name="speak">Listen</string>
+    <string name="copy">Copy</string>
+    <string name="share">Share</string>
+
+    <string name="tamil_preview">Tamil: %1$s</string>
+    <string name="result_label">%1$s translation</string>
+
+    <string name="status_converting">Converting Tanglish to Tamil script…</string>
+    <string name="status_downloading">Downloading %1$s → %2$s language pack (first time only, about 30 MB each)…</string>
+    <string name="status_translating">Translating…</string>
+
+    <string name="err_empty_text">Type something to translate</string>
+    <string name="err_empty_voice">Tap the mic and speak first</string>
+    <string name="err_speech_failed">Didn\'t catch that. Check your internet or speak again.</string>
+    <string name="err_tts_unavailable">No text-to-speech engine on this phone. Install \"Speech Services by Google\" from Play Store.</string>
+    <string name="tts_fallback_malay">Malay voice not installed, reading with the Indonesian voice</string>
+    <string name="err_no_speech">Speech recognition isn\'t available on this phone. Install or update the Google app.</string>
+    <string name="err_download">Couldn\'t download the language pack. Connect to the internet once and try again.</string>
+    <string name="err_generic">Translation failed: %1$s</string>
+    <string name="err_tts_not_ready">Voice output is still starting, try again in a moment</string>
+    <string name="err_tts_lang">%1$s voice isn\'t installed on this phone</string>
+    <string name="install">Install</string>
+    <string name="copied">Copied</string>
+</resources>

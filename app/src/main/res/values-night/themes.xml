@@ -1,0 +1,12 @@
+<resources>
+    <style name="Theme.Mozhi" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/brand_light</item>
+        <item name="colorOnPrimary">#003731</item>
+        <item name="colorPrimaryContainer">@color/brand_container_dark</item>
+        <item name="colorOnPrimaryContainer">@color/brand_on_container_dark</item>
+        <item name="colorSecondaryContainer">@color/brand_container_dark</item>
+        <item name="colorOnSecondaryContainer">@color/brand_on_container_dark</item>
+        <item name="android:statusBarColor">#00332D</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

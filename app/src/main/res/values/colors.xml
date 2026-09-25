@@ -1,0 +1,9 @@
+<resources>
+    <color name="brand">#00695C</color>
+    <color name="brand_light">#80CBC4</color>
+    <color name="brand_container">#B2DFDB</color>
+    <color name="brand_on_container">#00201C</color>
+    <color name="brand_container_dark">#005047</color>
+    <color name="brand_on_container_dark">#B2DFDB</color>
+    <color name="ic_launcher_background">#00695C</color>
+</resources>
