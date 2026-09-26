@@ -17,7 +17,7 @@ A Tamil-first translator app with two modes.
 ## How it works
 
 - **Translation:** with internet, Google Translate (online). It understands everyday spoken Tamil like *saptiya* or *enga irukka*. Without internet, the app falls back to Google ML Kit on the phone. Its language packs (about 30 MB each) download automatically on Wi-Fi after your first online translation. Offline results are marked **(offline)**. The offline model only understands formal Tamil, and if it can't translate something the app says so instead of repeating the input.
-- **Tanglish:** first changed into Tamil script, then translated. With internet it uses Google Input Tools transliteration, which is the most accurate. Without internet it uses built-in spelling rules. The Tamil version is shown under the input box so you can check it.
+- **Tanglish:** first changed into Tamil script, then translated. Common spoken words (enna/yena, da, panra, saptiya, enga, irukeenga and about 450 spellings) come from a built-in dictionary, so they're always right. Other words use Google Input Tools online, or built-in spelling rules offline. To teach it a new word, add it to `TanglishDictionary.kt`. The Tamil version is shown under the input box so you can check it.
   - Offline spelling tips: `L` = ள, `N` = ண, `R` = ற, `zh` = ழ, `ee` = ீ, `oo` = ூ, `E`/`O` = long ே/ோ.
 - **Voice input:** the phone's Google speech recogniser in the chosen language (ta-IN, hi-IN, en-IN, ms-MY). For offline voice, download that language's offline speech pack in the Google app.
 - **Read aloud:** the phone's text-to-speech. If a voice is missing, tap **Install**. Malay falls back to the Indonesian voice when no Malay voice is installed.
@@ -51,7 +51,8 @@ app/src/main/java/com/ramanan/mozhi/
   MainActivity.kt           Screen logic, voice input, read aloud, copy/share
   OnlineTranslator.kt       Google Translate online (first choice)
   TranslationEngine.kt      ML Kit offline translation and language-pack downloads
-  TanglishTransliterator.kt Tanglish → Tamil (online and offline)
+  TanglishDictionary.kt     Common spoken-Tamil words (add your own here)
+  TanglishTransliterator.kt Tanglish → Tamil (dictionary, then online, then offline)
   HindiRomanizer.kt         Hindi script → English letters
   Lang.kt                   Language list
 app/src/main/res/layout/activity_main.xml   Screen layout

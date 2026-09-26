@@ -11,8 +11,9 @@ import java.net.URLEncoder
  * Turns Tanglish (Tamil typed in English letters) into Tamil script,
  * so it can then be translated like normal Tamil.
  *
- * 1. Online: Google Input Tools transliteration (best accuracy, understands common spellings).
- * 2. Offline fallback: the phonetic rules in [OfflineTamilTransliterator].
+ * 1. Built-in dictionary of common spoken-Tamil words ([TanglishDictionary]): always correct.
+ * 2. Other words: Google Input Tools transliteration online.
+ * 3. Offline fallback: the phonetic rules in [OfflineTamilTransliterator].
  */
 object TanglishTransliterator {
 
@@ -21,18 +22,38 @@ object TanglishTransliterator {
     suspend fun toTamil(text: String): String = withContext(Dispatchers.IO) {
         var online = true
         text.lines().joinToString("\n") { line ->
-            when {
-                line.isBlank() -> line
-                // Already in Tamil script (or no English letters at all): nothing to convert
-                line.none { it in 'a'..'z' || it in 'A'..'Z' } -> line
-                online -> try {
-                    fetchOnline(line)
-                } catch (e: Exception) {
-                    online = false // no network: stop trying for the remaining lines
-                    OfflineTamilTransliterator.convert(line)
+            if (line.none { it in 'a'..'z' || it in 'A'..'Z' }) return@joinToString line // already Tamil / empty
+
+            // Split into words and the gaps between them (spaces, punctuation)
+            val tokens = Regex("[A-Za-z]+|[^A-Za-z]+").findAll(line).map { it.value }.toList()
+            val out = tokens.toMutableList()
+
+            // 1) common spoken-Tamil words: from the built-in dictionary (always right)
+            val unknownIdx = mutableListOf<Int>()
+            tokens.forEachIndexed { i, t ->
+                if (t[0].isLetter()) {
+                    val known = TanglishDictionary.lookup(t)
+                    if (known != null) out[i] = known else unknownIdx += i
                 }
-                else -> OfflineTamilTransliterator.convert(line)
             }
+
+            // 2) the rest: online converter in one request (words joined by spaces), else offline rules
+            if (unknownIdx.isNotEmpty()) {
+                val words = unknownIdx.map { tokens[it] }
+                val converted: List<String>? = if (online) {
+                    try {
+                        fetchOnline(words.joinToString(" ")).split(" ").takeIf { it.size == words.size }
+                            ?: words.map { fetchOnline(it) } // word count changed: convert one by one
+                    } catch (e: Exception) {
+                        online = false // no network: offline rules for the rest
+                        null
+                    }
+                } else null
+                unknownIdx.forEachIndexed { n, i ->
+                    out[i] = converted?.get(n) ?: OfflineTamilTransliterator.convert(tokens[i])
+                }
+            }
+            out.joinToString("")
         }
     }
 

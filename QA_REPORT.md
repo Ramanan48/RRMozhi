@@ -78,3 +78,5 @@
 | 13 | Critical | "Saptiya" → the result showed சாப்டியா unchanged for Hindi, English and Malay. The on-device model doesn't know spoken Tamil and copies unknown words | Online Google Translate is now used first; ML Kit only when offline |
 | 14 | High | When the offline model copied the input back, it was shown as a "translation" | Detected; a clear message is shown instead |
 | 15 | Medium | Hindi English-letters line showed Tamil text in italics | Line only shows when the result contains Hindi script |
+| 16 | Critical | "Nee yena da panra inga" → Tamil came out as "நீ என ட பண்ற இங்க" (Google's converter guesses short spoken words wrong), so the translation was nonsense ("Click here to see who you are") | New built-in dictionary of 448 common spoken-Tamil spellings, converted directly. Now gives "நீ என்ன டா பண்ற இங்க". Only unknown words go to Google's converter |
+| 17 | High | The dictionary list was named `entries`, which clashed with a built-in Kotlin map property, so the dictionary was silently empty | Renamed; caught by a test before release |
